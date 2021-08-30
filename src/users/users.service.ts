@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CoreOutput } from '../common/dtos/core.dto';
 import { EM } from '../common/error-message';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { NicknameSearchInput } from './dtos/user.dto';
+import { CreateUserDto, CreateUserOutput } from './dtos/create-user.dto';
+import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname';
 import { User } from './entities/user.entity';
+import { LoginInput, LoginOutput } from './dtos/login.dto';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +15,7 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async createUser({ email, password, nickname, role }: CreateUserDto): Promise<CoreOutput> {
+  async createUser({ email, password, nickname, role }: CreateUserDto): Promise<CreateUserOutput> {
     try {
       const exists = await this.usersRepository.findOne({ email });
 
@@ -41,7 +41,40 @@ export class UsersService {
     }
   }
 
-  async checkNickname({ nickname }: NicknameSearchInput): Promise<CoreOutput> {
+  async login({ email, password }: LoginInput): Promise<LoginOutput> {
+    try {
+      const user = await this.usersRepository.findOne({ email });
+
+      if (!user) {
+        return {
+          ok: false,
+          error: EM.USER_NOT_FOUND,
+        };
+      }
+
+      const checkPassword = await user.checkPassword(password);
+
+      if (!checkPassword) {
+        return {
+          ok: false,
+          error: EM.PASSWORD_MISMATCH,
+        };
+      }
+
+      //TODO: jwt token return
+      return {
+        ok: true,
+        token: 'token',
+      };
+    } catch {
+      return {
+        ok: false,
+        error: EM.INTERNAL_SERVER_ERROR,
+      };
+    }
+  }
+
+  async checkNickname({ nickname }: NicknameSearchInput): Promise<NicknameSearchOutput> {
     try {
       const exists = await this.usersRepository.findOne({ nickname });
       if (exists) {

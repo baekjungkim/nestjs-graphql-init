@@ -1,9 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CoreOutput } from '../common/dtos/core.dto';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { NicknameSearchInput } from './dtos/user.dto';
+import { CreateUserDto, CreateUserOutput } from './dtos/create-user.dto';
+import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
+import { LoginInput, LoginOutput } from './dtos/login.dto';
 
 @Resolver(of => User)
 export class UsersResolver {
@@ -14,13 +14,20 @@ export class UsersResolver {
     return this.usersService.getUsers();
   }
 
-  @Mutation(returns => CoreOutput)
-  createUser(@Args('input') createUserInput: CreateUserDto): Promise<CoreOutput> {
+  @Mutation(returns => CreateUserOutput)
+  createUser(@Args('input') createUserInput: CreateUserDto): Promise<CreateUserOutput> {
     return this.usersService.createUser(createUserInput);
   }
 
-  @Query(returns => CoreOutput)
-  checkNickname(@Args('input') nicknameSearchInput: NicknameSearchInput): Promise<CoreOutput> {
+  @Mutation(returns => LoginOutput)
+  login(@Args('input') loginInput: LoginInput): Promise<LoginOutput> {
+    return this.usersService.login(loginInput);
+  }
+
+  @Query(returns => NicknameSearchOutput)
+  checkNickname(
+    @Args('input') nicknameSearchInput: NicknameSearchInput
+  ): Promise<NicknameSearchOutput> {
     return this.usersService.checkNickname(nicknameSearchInput);
   }
 }
