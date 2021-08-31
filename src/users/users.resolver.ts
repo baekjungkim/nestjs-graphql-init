@@ -1,10 +1,10 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserDto, CreateUserOutput } from './dtos/create-user.dto';
 import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
-import { UsersOutput } from './dtos/user.dto';
+import { UserOutput, UsersOutput } from './dtos/user.dto';
 
 @Resolver(of => User)
 export class UsersResolver {
@@ -30,5 +30,13 @@ export class UsersResolver {
     @Args('input') nicknameSearchInput: NicknameSearchInput
   ): Promise<NicknameSearchOutput> {
     return this.usersService.checkNickname(nicknameSearchInput);
+  }
+
+  @Query(returns => UserOutput)
+  me(@Context() context): UserOutput {
+    return {
+      ok: true,
+      user: context.user,
+    };
   }
 }

@@ -9,4 +9,8 @@ export class JwtService {
   sign(id: number): string {
     return jwt.sign({ id }, this.config.get('SECRET_KEY'));
   }
+
+  verify(token: string) {
+    return jwt.verify(token, this.config.get('SECRET_KEY'));
+  }
 }

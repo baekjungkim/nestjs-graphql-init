@@ -6,7 +6,7 @@ import { CreateUserDto, CreateUserOutput } from './dtos/create-user.dto';
 import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname';
 import { User } from './entities/user.entity';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
-import { UsersOutput } from './dtos/user.dto';
+import { UserOutput, UsersOutput } from './dtos/user.dto';
 import { JwtService } from '../jwt/jwt.service';
 
 @Injectable()
@@ -104,6 +104,28 @@ export class UsersService {
       return {
         ok: true,
         error: null,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: EM.INTERNAL_SERVER_ERROR,
+      };
+    }
+  }
+
+  async findById(id: number): Promise<UserOutput> {
+    try {
+      const user = await this.usersRepository.findOne({ id });
+      if (!user) {
+        return {
+          ok: false,
+          error: EM.USER_NOT_FOUND,
+        };
+      }
+
+      return {
+        ok: true,
+        user,
       };
     } catch {
       return {
