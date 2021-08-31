@@ -6,13 +6,25 @@ import { CreateUserDto, CreateUserOutput } from './dtos/create-user.dto';
 import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname';
 import { User } from './entities/user.entity';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
+import { UsersOutput } from './dtos/user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>) {}
 
-  getUsers(): Promise<User[]> {
-    return this.usersRepository.find();
+  async getUsers(): Promise<UsersOutput> {
+    try {
+      const users = await this.usersRepository.find();
+      return {
+        ok: true,
+        users,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: EM.INTERNAL_SERVER_ERROR,
+      };
+    }
   }
 
   async createUser({ email, password, nickname, role }: CreateUserDto): Promise<CreateUserOutput> {
@@ -57,7 +69,7 @@ export class UsersService {
       if (!checkPassword) {
         return {
           ok: false,
-          error: EM.PASSWORD_MISMATCH,
+          error: EM.PASSWORD_WRONG,
         };
       }
 

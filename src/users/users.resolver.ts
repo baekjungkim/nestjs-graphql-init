@@ -4,13 +4,14 @@ import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
+import { UsersOutput } from './dtos/user.dto';
 
 @Resolver(of => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(returns => [User])
-  getUsers(): Promise<User[]> {
+  @Query(returns => UsersOutput)
+  getUsers(): Promise<UsersOutput> {
     return this.usersService.getUsers();
   }
 

@@ -33,6 +33,6 @@ export const EM = {
   NICKNAME_ALREADY: 'This nickname is already',
   /** @returns 'User not authentication' */
   USER_NOT_AUTHENTICATION: 'User not authentication',
-  /** @returns 'Password is mismatch' */
-  PASSWORD_MISMATCH: 'Password is mismatch',
+  /** @returns 'The password is wrong' */
+  PASSWORD_WRONG: 'The password is wrong',
 };

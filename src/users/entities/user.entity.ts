@@ -2,7 +2,7 @@ import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { IsEmail } from 'class-validator';
 import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { CoreEntity } from '../../common/entities/core.entity';
+import { CommonEntity } from '../../common/entities/common.entity';
 import { InternalServerErrorException } from '@nestjs/common';
 import {
   uniqueNamesGenerator,
@@ -20,10 +20,10 @@ enum UserRole {
 
 registerEnumType(UserRole, { name: 'UserRole' });
 
-@InputType('UserInput', { isAbstract: true })
 @Entity()
+@InputType('UserInput', { isAbstract: true })
 @ObjectType()
-export class User extends CoreEntity {
+export class User extends CommonEntity {
   @Column()
   @Field(type => String)
   @IsEmail()
