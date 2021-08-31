@@ -5,6 +5,8 @@ import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserOutput, UsersOutput } from './dtos/user.dto';
+import { AuthGuard } from '../auth/auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(of => User)
 export class UsersResolver {
@@ -32,6 +34,7 @@ export class UsersResolver {
     return this.usersService.checkNickname(nicknameSearchInput);
   }
 
+  @UseGuards(AuthGuard)
   @Query(returns => UserOutput)
   me(@Context() context): UserOutput {
     return {

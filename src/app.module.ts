@@ -3,7 +3,6 @@ import * as Joi from 'joi';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
-import { CommonModule } from './common/common.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
@@ -33,7 +32,6 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
     TypeOrmModule.forRoot(),
     JwtModule.forRoot(),
     UsersModule,
-    CommonModule,
   ],
   controllers: [],
   providers: [],
