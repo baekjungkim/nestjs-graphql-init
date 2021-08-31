@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserDto, CreateUserOutput } from './dtos/create-user.dto';
 import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname';
 import { User } from './entities/user.entity';
