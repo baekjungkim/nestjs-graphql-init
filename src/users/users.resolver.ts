@@ -4,7 +4,7 @@ import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
-import { UserOutput, UsersOutput } from './dtos/user.dto';
+import { UserInput, UserOutput, UsersOutput } from './dtos/user.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { AuthUser } from '../auth/auth.decorator';
@@ -42,5 +42,11 @@ export class UsersResolver {
       ok: true,
       user: authUser,
     };
+  }
+
+  @UseGuards(AuthGuard)
+  @Query(returns => UserOutput)
+  seeProfile(@Args('input') userInput: UserInput): Promise<UserOutput> {
+    return this.usersService.findById(userInput.id);
   }
 }
