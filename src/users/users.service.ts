@@ -7,10 +7,14 @@ import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname
 import { User } from './entities/user.entity';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UsersOutput } from './dtos/user.dto';
+import { JwtService } from '../jwt/jwt.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
+    private readonly jwtService: JwtService
+  ) {}
 
   async getUsers(): Promise<UsersOutput> {
     try {
@@ -73,10 +77,11 @@ export class UsersService {
         };
       }
 
-      //TODO: jwt token return
+      const token = this.jwtService.sign(user.id);
+
       return {
         ok: true,
-        token: 'token',
+        token,
       };
     } catch {
       return {
