@@ -22,7 +22,7 @@ export class User extends CommonEntity {
   @IsEmail()
   email: string;
 
-  @Column()
+  @Column({ select: false })
   @Field(type => String)
   password: string;
 
@@ -34,6 +34,10 @@ export class User extends CommonEntity {
   @Column({ type: 'enum', enum: UserRole })
   @Field(type => UserRole)
   role: UserRole;
+
+  @Column({ default: false })
+  @Field(type => Boolean)
+  verified: boolean;
 
   @BeforeInsert()
   @BeforeUpdate()

@@ -3,7 +3,7 @@ import { CommonOutput } from '../../common/dtos/common.dto';
 import { User } from '../entities/user.entity';
 
 @InputType()
-export class CreateUserDto extends PickType(User, ['email', 'password', 'nickname', 'role']) {}
+export class CreateUserInput extends PickType(User, ['email', 'password', 'nickname', 'role']) {}
 
 @ObjectType()
 export class CreateUserOutput extends CommonOutput {}

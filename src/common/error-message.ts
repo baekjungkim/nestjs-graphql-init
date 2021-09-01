@@ -35,4 +35,6 @@ export const EM = {
   USER_NOT_AUTHENTICATION: 'User not authentication',
   /** @returns 'The password is wrong' */
   PASSWORD_WRONG: 'The password is wrong',
+  /** @returns 'Code does not exist' */
+  CODE_NOT_EXIST: 'Code does not exist',
 };

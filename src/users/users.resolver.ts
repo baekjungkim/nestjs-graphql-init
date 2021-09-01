@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateUserDto, CreateUserOutput } from './dtos/create-user.dto';
+import { CreateUserInput, CreateUserOutput } from './dtos/create-user.dto';
 import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -14,6 +14,7 @@ import {
   UpdatePasswordInput,
   UpdatePasswordOutput,
 } from './dtos/update-profile.dto';
+import { VerifyEmailInput, VerifyEmailOutput } from './dtos/verify-email.dto';
 
 @Resolver(of => User)
 export class UsersResolver {
@@ -25,7 +26,7 @@ export class UsersResolver {
   }
 
   @Mutation(returns => CreateUserOutput)
-  createUser(@Args('input') createUserInput: CreateUserDto): Promise<CreateUserOutput> {
+  createUser(@Args('input') createUserInput: CreateUserInput): Promise<CreateUserOutput> {
     return this.usersService.createUser(createUserInput);
   }
 
@@ -72,5 +73,10 @@ export class UsersResolver {
     @Args('input') updateNicknameInput: UpdateNicknameInput
   ): Promise<UpdateNicknameOutput> {
     return this.usersService.updateNickname(loggedUser.id, updateNicknameInput);
+  }
+
+  @Mutation(returns => VerifyEmailOutput)
+  verifyEmail(@Args('input') verifyEmailInput: VerifyEmailInput): Promise<VerifyEmailOutput> {
+    return this.usersService.verifyEmail(verifyEmailInput);
   }
 }
