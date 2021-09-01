@@ -1,16 +1,9 @@
 import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { IsEmail } from 'class-validator';
+import { IsEmail, Length } from 'class-validator';
 import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CommonEntity } from '../../common/entities/common.entity';
 import { InternalServerErrorException } from '@nestjs/common';
-import {
-  uniqueNamesGenerator,
-  Config,
-  colors,
-  animals,
-  NumberDictionary,
-} from 'unique-names-generator';
 
 enum UserRole {
   Master,
@@ -21,7 +14,7 @@ enum UserRole {
 registerEnumType(UserRole, { name: 'UserRole' });
 
 @Entity()
-@InputType('UserInput', { isAbstract: true })
+@InputType('UserDto', { isAbstract: true })
 @ObjectType()
 export class User extends CommonEntity {
   @Column()
@@ -34,27 +27,13 @@ export class User extends CommonEntity {
   password: string;
 
   @Column({ unique: true })
-  @Field(type => String, { nullable: true })
+  @Field(type => String)
+  @Length(2, 10)
   nickname: string;
 
   @Column({ type: 'enum', enum: UserRole })
   @Field(type => UserRole)
   role: UserRole;
-
-  @BeforeInsert()
-  makeNickname() {
-    if (!this.nickname) {
-      const numberDictionary: string[] = NumberDictionary.generate();
-      const config: Config = {
-        dictionaries: [colors, animals, numberDictionary],
-        length: 3,
-        separator: '',
-        style: 'capital',
-      };
-
-      this.nickname = uniqueNamesGenerator(config); // RedDonkey123
-    }
-  }
 
   @BeforeInsert()
   @BeforeUpdate()

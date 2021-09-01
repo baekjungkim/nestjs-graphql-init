@@ -39,12 +39,19 @@ export class UsersService {
 
   async createUser({ email, password, nickname, role }: CreateUserDto): Promise<CreateUserOutput> {
     try {
-      const exists = await this.usersRepository.findOne({ email });
-
-      if (exists) {
+      const emailExists = await this.usersRepository.findOne({ email });
+      if (emailExists) {
         return {
           ok: false,
           error: EM.EMAIL_ALREADY,
+        };
+      }
+
+      const nicknameExists = await this.usersRepository.findOne({ nickname });
+      if (nicknameExists) {
+        return {
+          ok: false,
+          error: EM.NICKNAME_ALREADY,
         };
       }
 
