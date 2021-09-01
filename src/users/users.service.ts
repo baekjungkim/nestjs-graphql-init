@@ -3,11 +3,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EM } from '../common/error-message';
 import { CreateUserDto, CreateUserOutput } from './dtos/create-user.dto';
-import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname';
+import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname.dto';
 import { User } from './entities/user.entity';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserOutput, UsersOutput } from './dtos/user.dto';
 import { JwtService } from '../jwt/jwt.service';
+import {
+  UpdateNicknameInput,
+  UpdateNicknameOutput,
+  UpdatePasswordInput,
+  UpdatePasswordOutput,
+} from './dtos/update-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -126,6 +132,51 @@ export class UsersService {
       return {
         ok: true,
         user,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: EM.INTERNAL_SERVER_ERROR,
+      };
+    }
+  }
+
+  async updatePassword(
+    id: number,
+    { password }: UpdatePasswordInput
+  ): Promise<UpdatePasswordOutput> {
+    try {
+      const user = await this.usersRepository.findOne(id);
+      user.password = password;
+      await this.usersRepository.save(user);
+      return {
+        ok: true,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: EM.INTERNAL_SERVER_ERROR,
+      };
+    }
+  }
+
+  async updateNickname(
+    id: number,
+    { nickname }: UpdateNicknameInput
+  ): Promise<UpdateNicknameOutput> {
+    try {
+      const user = await this.usersRepository.findOne({ nickname });
+
+      if (user && user.id !== id) {
+        return {
+          ok: false,
+          error: EM.NICKNAME_ALREADY,
+        };
+      }
+
+      await this.usersRepository.update({ id }, { nickname });
+      return {
+        ok: true,
       };
     } catch {
       return {
