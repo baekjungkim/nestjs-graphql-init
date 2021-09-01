@@ -1,29 +1,36 @@
 # HalfBack
 
-## 사용자
+## User
 
-- [ ] 회원가입
-- [ ] 로그인
-- [ ] 이메일 체크
-- [ ] 팀 및 선수 즐겨찾기
-
-<br />
-<br />
-
-## 선수
-
-- [ ] 선수 데이터
+- [x] CreateAccount
+- [x] Login
+- [ ] Verify Email
+- [ ] Subscription Team & Player
 
 <br />
 <br />
 
-## 팀
+## Player
 
-- [ ] 팀 데이터
+- [ ] Create
+- [ ] Read
+- [ ] Update
+- [ ] Delete
+- [ ] Connect Team
 
 <br />
 <br />
 
-## 게시판
+## Team
+
+- [ ] Create
+- [ ] Read
+- [ ] Update
+- [ ] Delete
+
+<br />
+<br />
+
+## Board
 
 - [ ] CRUD
