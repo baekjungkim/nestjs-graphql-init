@@ -66,15 +66,6 @@ export class UsersService {
         };
       }
 
-      // 닉네임 체크
-      const nicknameExists = await this.usersRepository.findOne({ nickname });
-      if (nicknameExists) {
-        return {
-          ok: false,
-          error: EM.NICKNAME_ALREADY,
-        };
-      }
-
       // 유저 생성
       const user = await this.usersRepository.save(
         this.usersRepository.create({ email, password, nickname, role })
@@ -262,6 +253,7 @@ export class UsersService {
    */
   async verifyEmail({ code }: VerifyEmailInput): Promise<VerifyEmailOutput> {
     try {
+      // 인증코드 찾기
       const verification = await this.verificationsRepository.findOne(
         { code },
         { relations: ['user'] }
@@ -274,8 +266,12 @@ export class UsersService {
         };
       }
 
+      // 인증코드 유저 인증 확인
       verification.user.verified = true;
+      // 인증 확인 저장
       await this.usersRepository.save(verification.user);
+      // 인증 코드 삭제
+      await this.verificationsRepository.delete(verification.id);
       return {
         ok: true,
       };
