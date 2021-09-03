@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { EM } from '../common/error-message';
 import { CreateUserInput, CreateUserOutput } from './dtos/create-user.dto';
 import { NicknameSearchInput, NicknameSearchOutput } from './dtos/check-nickname.dto';
@@ -79,7 +79,6 @@ export class UsersService {
 
       return {
         ok: true,
-        error: null,
       };
     } catch (error) {
       return {
@@ -146,7 +145,6 @@ export class UsersService {
 
       return {
         ok: true,
-        error: null,
       };
     } catch {
       return {
@@ -223,10 +221,10 @@ export class UsersService {
     { nickname }: UpdateNicknameInput
   ): Promise<UpdateNicknameOutput> {
     try {
-      // 닉네임 체크
-      const exists = await this.usersRepository.findOne({ nickname });
-      // 해당 닉네임 유저 있음 그리고 해당 유저 id 가 본인이 아닐경우
-      if (exists && exists.id !== id) {
+      // 닉네임 체크 & 해당 유저 id 가 본인이 아닐경우
+      const exists = await this.usersRepository.findOne({ nickname, id: Not(id) });
+      // 해당 닉네임 유저 있음
+      if (exists) {
         return {
           ok: false,
           error: EM.NICKNAME_ALREADY,

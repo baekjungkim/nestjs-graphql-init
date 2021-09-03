@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { CommonEntity } from '../../common/entities/common.entity';
 import { InternalServerErrorException } from '@nestjs/common';
 
-enum UserRole {
+export enum UserRole {
   Master,
   Manager,
   Client,

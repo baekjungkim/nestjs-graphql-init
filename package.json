@@ -33,7 +33,7 @@
     "class-transformer": "0.4.0",
     "class-validator": "0.13.1",
     "cross-env": "7.0.3",
-    "faker": "^5.5.3",
+    "faker": "5.5.3",
     "graphql": "15.5.1",
     "joi": "17.4.2",
     "jsonwebtoken": "^8.5.1",
@@ -43,7 +43,7 @@
     "rxjs": "7.2.0",
     "sqlite3": "5.0.2",
     "typeorm": "0.2.37",
-    "uuid": "^8.3.2"
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "@nestjs/cli": "8.0.0",
@@ -75,15 +75,23 @@
       "json",
       "ts"
     ],
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    },
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.service.ts"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      ".entity.ts",
+      ".constants.ts"
+    ]
   }
 }
