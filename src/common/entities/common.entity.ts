@@ -3,15 +3,15 @@ import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'type
 
 @ObjectType()
 export class CommonEntity {
-  @PrimaryGeneratedColumn()
   @Field(type => Number)
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
   @Field(type => Date)
+  @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
   @Field(type => Date)
+  @UpdateDateColumn()
   updatedAt: Date;
 }

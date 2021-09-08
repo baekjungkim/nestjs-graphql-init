@@ -17,26 +17,26 @@ registerEnumType(UserRole, { name: 'UserRole' });
 @InputType('UserDto', { isAbstract: true })
 @ObjectType()
 export class User extends CommonEntity {
-  @Column()
   @Field(type => String)
+  @Column()
   @IsEmail()
   email: string;
 
-  @Column({ select: false })
   @Field(type => String)
+  @Column({ select: false })
   password: string;
 
-  @Column({ unique: true })
   @Field(type => String)
+  @Column({ unique: true })
   @Length(2, 10)
   nickname: string;
 
-  @Column({ type: 'enum', enum: UserRole })
   @Field(type => UserRole)
+  @Column({ type: 'enum', enum: UserRole })
   role: UserRole;
 
-  @Column({ default: false })
   @Field(type => Boolean)
+  @Column({ default: false })
   verified: boolean;
 
   @BeforeInsert()

@@ -8,8 +8,8 @@ import { User } from './user.entity';
 @InputType('VerificationDto', { isAbstract: true })
 @ObjectType()
 export class Verification extends CommonEntity {
-  @Column()
   @Field(type => String)
+  @Column()
   code: string;
 
   @OneToOne(type => User, { onDelete: 'CASCADE' })
