@@ -27,6 +27,14 @@ export class UsersService {
   ) {}
 
   /**
+   * Internal Server Error
+   */
+  private readonly InternalServerErrorOutput = {
+    ok: false,
+    error: EM.INTERNAL_SERVER_ERROR,
+  };
+
+  /**
    * 모든 유저 조회
    * @returns UsersOutput
    */
@@ -38,10 +46,7 @@ export class UsersService {
         users,
       };
     } catch {
-      return {
-        ok: false,
-        error: EM.INTERNAL_SERVER_ERROR,
-      };
+      return this.InternalServerErrorOutput;
     }
   }
 
@@ -80,11 +85,8 @@ export class UsersService {
       return {
         ok: true,
       };
-    } catch (error) {
-      return {
-        ok: false,
-        error: EM.INTERNAL_SERVER_ERROR,
-      };
+    } catch {
+      return this.InternalServerErrorOutput;
     }
   }
 
@@ -120,10 +122,7 @@ export class UsersService {
         token,
       };
     } catch {
-      return {
-        ok: false,
-        error: EM.INTERNAL_SERVER_ERROR,
-      };
+      return this.InternalServerErrorOutput;
     }
   }
 
@@ -147,10 +146,7 @@ export class UsersService {
         ok: true,
       };
     } catch {
-      return {
-        ok: false,
-        error: EM.INTERNAL_SERVER_ERROR,
-      };
+      return this.InternalServerErrorOutput;
     }
   }
 
@@ -175,10 +171,7 @@ export class UsersService {
         user,
       };
     } catch {
-      return {
-        ok: false,
-        error: EM.INTERNAL_SERVER_ERROR,
-      };
+      return this.InternalServerErrorOutput;
     }
   }
 
@@ -203,10 +196,7 @@ export class UsersService {
         ok: true,
       };
     } catch {
-      return {
-        ok: false,
-        error: EM.INTERNAL_SERVER_ERROR,
-      };
+      return this.InternalServerErrorOutput;
     }
   }
 
@@ -237,10 +227,7 @@ export class UsersService {
         ok: true,
       };
     } catch {
-      return {
-        ok: false,
-        error: EM.INTERNAL_SERVER_ERROR,
-      };
+      return this.InternalServerErrorOutput;
     }
   }
 
@@ -274,10 +261,7 @@ export class UsersService {
         ok: true,
       };
     } catch {
-      return {
-        ok: false,
-        error: EM.INTERNAL_SERVER_ERROR,
-      };
+      return this.InternalServerErrorOutput;
     }
   }
 }

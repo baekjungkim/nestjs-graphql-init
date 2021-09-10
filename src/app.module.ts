@@ -6,9 +6,9 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
-import { getConnectionOptions } from 'typeorm';
 import { User } from './users/entities/user.entity';
 import { Verification } from './users/entities/verification.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -52,6 +52,8 @@ import { Verification } from './users/entities/verification.entity';
     }),
     // JWT Module Setting
     JwtModule.forRoot(),
+    // Auth
+    AuthModule,
     // Resolvers
     UsersModule,
   ],

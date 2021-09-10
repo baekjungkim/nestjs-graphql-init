@@ -6,9 +6,9 @@ import { CommonEntity } from '../../common/entities/common.entity';
 import { InternalServerErrorException } from '@nestjs/common';
 
 export enum UserRole {
-  Master,
-  Manager,
-  Client,
+  Master = 'Master',
+  Manager = 'Manager',
+  Client = 'Client',
 }
 
 registerEnumType(UserRole, { name: 'UserRole' });

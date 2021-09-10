@@ -5,9 +5,7 @@ import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserInput, UserOutput, UsersOutput } from './dtos/user.dto';
-import { AuthGuard } from '../auth/auth.guard';
-import { UseGuards } from '@nestjs/common';
-import { LoggedUser } from '../auth/auth.decorator';
+import { AuthUser } from '../auth/auth-user.decorator';
 import {
   UpdateNicknameInput,
   UpdateNicknameOutput,
@@ -15,6 +13,7 @@ import {
   UpdatePasswordOutput,
 } from './dtos/update-profile.dto';
 import { VerifyEmailInput, VerifyEmailOutput } from './dtos/verify-email.dto';
+import { Role } from '../auth/role.decorator';
 
 @Resolver(of => User)
 export class UsersResolver {
@@ -42,37 +41,37 @@ export class UsersResolver {
     return this.usersService.checkNickname(nicknameSearchInput);
   }
 
-  @UseGuards(AuthGuard)
+  @Role(['Any'])
   @Query(returns => UserOutput)
-  me(@LoggedUser() loggedUser: User): UserOutput {
+  me(@AuthUser() authUser: User): UserOutput {
     return {
       ok: true,
-      user: loggedUser,
+      user: authUser,
     };
   }
 
-  @UseGuards(AuthGuard)
+  @Role(['Any'])
   @Query(returns => UserOutput)
   seeProfile(@Args('input') userInput: UserInput): Promise<UserOutput> {
     return this.usersService.findById(userInput.id);
   }
 
-  @UseGuards(AuthGuard)
+  @Role(['Any'])
   @Mutation(returns => UpdatePasswordOutput)
   updatePassword(
-    @LoggedUser() loggedUser: User,
+    @AuthUser() authUser: User,
     @Args('input') updatePasswordInput: UpdatePasswordInput
   ): Promise<UpdatePasswordOutput> {
-    return this.usersService.updatePassword(loggedUser.id, updatePasswordInput);
+    return this.usersService.updatePassword(authUser.id, updatePasswordInput);
   }
 
-  @UseGuards(AuthGuard)
+  @Role(['Any'])
   @Mutation(returns => UpdateNicknameOutput)
   updateNickname(
-    @LoggedUser() loggedUser: User,
+    @AuthUser() authUser: User,
     @Args('input') updateNicknameInput: UpdateNicknameInput
   ): Promise<UpdateNicknameOutput> {
-    return this.usersService.updateNickname(loggedUser.id, updateNicknameInput);
+    return this.usersService.updateNickname(authUser.id, updateNicknameInput);
   }
 
   @Mutation(returns => VerifyEmailOutput)
